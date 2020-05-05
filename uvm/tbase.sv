@@ -1,4 +1,5 @@
 import uvm_pkg::*;
+import prenv::*;
 
 class test_base extends uvm_test;
   `uvm_component_utils(test_base)

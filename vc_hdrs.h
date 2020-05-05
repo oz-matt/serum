@@ -38,6 +38,22 @@ typedef struct VeriC_Descriptor *vc_handle;
 #endif /* _VC_TYPES_ */
 
 
+ extern SV_STRING verdi_dump_resource_value(/* INPUT */const char* rsrc);
+
+ extern SV_STRING verdi_dump_component_interface(/* INPUT */const char* var_name, /* OUTPUT */int *ary_size, /* OUTPUT */SV_STRING *class_name, /* OUTPUT */SV_STRING *vif_var_name);
+
+ extern SV_STRING verdi_upper_scope(/* INPUT */const char* inst_scope_name);
+
+ extern void verdi_dhier_interface(/* INPUT */const char* var_name);
+
+ extern int pli_dhier_begin_event(/* INPUT */const char* streamN);
+
+ extern void pli_dhier_set_label(/* INPUT */int handle, /* INPUT */const char* label);
+
+ extern void pli_dhier_add_attribute(/* INPUT */int handle, /* INPUT */const char* attr_name, /* INPUT */const char* attr_value);
+
+ extern void pli_dhier_end_event(/* INPUT */int handle);
+
  extern int uvm_hdl_check_path(/* INPUT */const char* path);
 
  extern int uvm_hdl_deposit(/* INPUT */const char* path, const /* INPUT */svLogicVecVal *value);

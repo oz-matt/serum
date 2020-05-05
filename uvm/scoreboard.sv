@@ -15,7 +15,7 @@ class scoreboard extends uvm_scoreboard;
     super.build_phase(phase);
     `uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
     sb_aport  = new("sb_aport", this);
-    sb_outaport  = new("sb_aport", this);
+    sb_outaport  = new("sb_outaport", this);
   endfunction: build_phase
   
   virtual function void write (seq_packet data);
