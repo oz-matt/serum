@@ -30,7 +30,8 @@ runtime_switches = -l ${log} +UVM_TESTNAME=${test} +UVM_VERBOSITY=${verbosity} +
 
 tcl = packet.tcl
 tr = packet_tr.tcl
-cmd = packet.cmd
+cmdtr = stdP.cmd
+cmdi = std.cmd
 
 all: simv run
 
@@ -60,14 +61,15 @@ dve_i: simv
 	./simv -gui=dve +ntb_random_seed=$(seed) ${runtime_switches} &
 
 verdi:
-	verdi -play debug_files/${cmd} -nologo &
+	verdi -play verdi_scripts/${cmd} -nologo &
 
 verdi_tr:
 	./simv +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE
-	verdi -play debug_files/${cmd} -nologo & 
+	verdi -play verdi_scripts/${cmdtr} -nologo & 
 
-verdi_i: simv
-	./simv -gui=verdi +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE &
+verdi_i: 
+	./simv +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE
+	verdi -play verdi_scripts/${cmdi} -nologo & 
 
 solution: nuke
 	cp ../../solutions/lab4/*.sv .

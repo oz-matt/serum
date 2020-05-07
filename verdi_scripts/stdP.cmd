@@ -6,14 +6,3 @@ debImport "-sverilog" "-ntb_opts" "uvm-1.2" "./patrec.sv" \
           "+UVM_TR_RECORD" "+UVM_LOG_RECORD" "+ntb_random_seed=1"
 debLoadSimResult \
            ./novas.fsdb
-srcTBInvokeSim
-wvCreateWindow
-srcHBSelect "simpletb.vif" -win $_nTrace1
-wvAddSubGroup -win $_nWave2 -holdpost {vif(axilite_int(1,32,8))}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1/vif(axilite_int(1,32,8))" 0)}
-wvAddSignal -win $_nWave2 "/simpletb/vif/AXI_ACLK" \
-           "/simpletb/vif/AXI_ARESETN" \
-           "/simpletb/vif/AXI_ARVALID" \
-           "/simpletb/vif/AXI_ARREADY"
-wvZoomAll -win $_nWave2

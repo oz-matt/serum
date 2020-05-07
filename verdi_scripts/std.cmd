@@ -1,33 +1,27 @@
-simSetSimulator "-vcssv" -exec "simv" -args -uvmDebug on
-debImport "-sverilog" "-ntb_opts" "uvm-1.2" "./patrec.sv" \
-          "./axi_lite_int.sv" "./pkg/prenv.svh" "./pkg/axil_if_c.sv" \
-          "./tests/simpletb.sv" "./uvm/tbase.sv" "-l" "simv.log" \
-          "+UVM_TESTNAME=test_base" "+UVM_VERBOSITY=UVM_MEDIUM" "+" "+" \
-          "+UVM_TR_RECORD" "+UVM_LOG_RECORD" "+ntb_random_seed=1"
-debLoadSimResult \
-           ./novas.fsdb
+debImport "-i" "-simflow" "-simBin" "./simv" "-simDelim" \
+          "+ntb_random_seed=1 -a simv.log +UVM_TESTNAME=test_base +UVM_VERBOSITY=UVM_MEDIUM + + +UVM_TR_RECORD +UVM_LOG_RECORD +UVM_VERDI_TRACE"
+srcTBInvokeSim
+verdiDockWidgetSetCurTab -dock widgetDock_<Decl._Tree>
+verdiDockWidgetSetCurTab -dock widgetDock_<Inst._Tree>
+srcHBSelect "simpletb.vif" -win $_nTrace1
+srcHBSelect "simpletb.vif" -win $_nTrace1
+srcHBSelect "simpletb.vif" -win $_nTrace1
+srcSetScope -win $_nTrace1 "simpletb.vif" -delim "."
 wvCreateWindow
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "AXI_ACLK" -win $_nTrace1
+srcAction -pos 9 11 3 -win $_nTrace1 -name "AXI_ACLK" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal "vif.AXI_ACLK" -line 12 -pos 1
+srcAddSelectedToWave -win $_nTrace1
 srcHBSelect "simpletb.vif" -win $_nTrace1
-wvAddSubGroup -win $_nWave2 -holdpost {vif(axilite_int#(1,32,8))}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1/vif(axilite_int#(1,32,8))" 0)}
 srcHBSelect "simpletb.vif" -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSubGroup -win $_nWave2 -holdpost {vif(axilite_int(1,32,8))}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 0)}
-wvAddSignal -win $_nWave2 "/simpletb/vif/AXI_ACLK" \
-           "/simpletb/vif/AXI_ARESETN" \
-           "/simpletb/vif/AXI_ARVALID" \
-           "/simpletb/vif/AXI_ARREADY"
-wvSetPosition -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 0)}
-wvSetPosition -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 8)}
-wvSetPosition -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 8)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-verdiWindowResize -win Verdi_1 "213" "221" "983" "693"
-verdiWindowResize -win Verdi_1 "213" "221" "983" "832"
-wvSelectSignal -win $_nWave2 {( "G2/vif(axilite_int(1,32,8))" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G2/vif(axilite_int(1,32,8))" 8 )} 
-wvSetPosition -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 8)}
-wvExpandBus -win $_nWave2 {("G2/vif(axilite_int(1,32,8))" 8)}
-wvZoomAll -win $_nWave2
+srcSetScope -win $_nTrace1 "simpletb.vif" -delim "."
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "AXI_ARVALID" -win $_nTrace1
+srcAddSelectedToWave -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "AXI_ARREADY" -win $_nTrace1
+srcAddSelectedToWave -win $_nTrace1
+srcTBRunSim
