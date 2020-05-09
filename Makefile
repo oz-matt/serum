@@ -4,9 +4,9 @@ LD_LIBRARY_PATH = ${NOVAS_HOME}/share/PLI/VCS/LINUX64
 
 test = test_base
 program_path = ./tests
-PROGRAM_TOP = ${program_path}/simpletb.sv  ./uvm/tbase.sv patrec.sv
+PROGRAM_TOP = ${program_path}/simpletb.sv ${program_path}/master_wrapper.sv  ./uvm/tbase.sv patrec.sv
 package_path = ./pkg
-PACKAGES = axi_lite_int.sv ${package_path}/*.svh ${package_path}/*.sv
+PACKAGES = axi_lite_int.sv mdriver_int.sv ./protocol_checker/axil_checker.sv ${package_path}/*.svh ${package_path}/*.sv
 TEST_TOP = ${PACKAGES} ${PROGRAM_TOP}
 rtl_path = ./uvm
 DUT = ./uvm/seq_packet.sv  ./uvm/imon.sv ./uvm/omon.sv  ./uvm/seq.sv  ./uvm/driver.sv ./uvm/agt.sv  ./uvm/oagt.sv  ./uvm/scoreboard.sv  ./uvm/env.sv 

@@ -2,10 +2,10 @@ import uvm_pkg::*;
 
 class seq_packet extends uvm_sequence_item;
 	
-	rand bit bt;
+	rand bit rdata;
 	
     `uvm_object_utils_begin(seq_packet)
-        `uvm_field_int(bt, UVM_ALL_ON)
+        `uvm_field_int(rdata, UVM_ALL_ON)
     `uvm_object_utils_end
     
     

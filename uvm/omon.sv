@@ -3,7 +3,7 @@ import uvm_pkg::*;
 class oMonitor extends uvm_monitor;
   `uvm_component_utils(oMonitor)
   
-	virtual axilite_int#(1,32,8) vif;
+	virtual mdriver_int#(1,32,8) vif;
 
   uvm_analysis_port #(seq_packet) analysis_port;
 
@@ -17,7 +17,7 @@ class oMonitor extends uvm_monitor;
     super.build_phase(phase);
     `uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 
-    uvm_config_db#(virtual axilite_int#(1,32,8))::get(this, "", "vif", vif);
+    uvm_config_db#(virtual mdriver_int#(1,32,8))::get(this, "", "vif", vif);
 
     analysis_port = new("analysis_port", this);
 
@@ -29,8 +29,8 @@ virtual task run_phase(uvm_phase phase);
 
     forever begin
       tr = seq_packet::type_id::create("tr", this);
-	  @(posedge vif.AXI_ARREADY);
-      tr.bt = vif.AXI_ARREADY;
+	  @(posedge vif.we);
+      tr.rdata = vif.we;
       `uvm_info("Got_Output_Packet", {"\n", tr.sprint()}, UVM_MEDIUM);
       analysis_port.write(tr);
     end

@@ -6,7 +6,7 @@ import uvm_pkg::*;
 class agt extends uvm_agent;
 	`uvm_component_utils(agt)
 	
-	virtual axilite_int#(1,32,8) vif;
+	virtual mdriver_int#(1,32,8) vif;
 	drv drv_inst;
 	uvm_sequencer#(seq_packet) drv_side_sequencer;
     iMonitor mon;
@@ -31,8 +31,8 @@ class agt extends uvm_agent;
 		
         analysis_port = new("analysis_port", this);
 		
-		uvm_config_db#(virtual axilite_int#(1,32,8))::get(this, "", "vif", vif);
-		uvm_config_db#(virtual axilite_int#(1,32,8))::set(this, "*", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(1,32,8))::get(this, "", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(1,32,8))::set(this, "*", "vif", vif);
   	
 	endfunction: build_phase
 	

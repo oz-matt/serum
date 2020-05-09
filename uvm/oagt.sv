@@ -6,7 +6,7 @@ import uvm_pkg::*;
 class oagt extends uvm_agent;
 	`uvm_component_utils(oagt)
 	
-	virtual axilite_int#(1,32,8) vif;
+	virtual mdriver_int#(1,32,8) vif;
     oMonitor mon;
     uvm_analysis_port #(seq_packet) analysis_port;
 	
@@ -23,8 +23,8 @@ class oagt extends uvm_agent;
 		
         analysis_port = new("analysis_port", this);
 		
-		uvm_config_db#(virtual axilite_int#(1,32,8))::get(this, "", "vif", vif);
-		uvm_config_db#(virtual axilite_int#(1,32,8))::set(this, "*", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(1,32,8))::get(this, "", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(1,32,8))::set(this, "*", "vif", vif);
   	
 	endfunction: build_phase
 	

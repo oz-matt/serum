@@ -5,7 +5,7 @@ import uvm_pkg::*;
 class drv extends uvm_driver#(seq_packet);
 	`uvm_component_utils(drv)
 	
-	virtual axilite_int#(1,32,8) vif;
+	virtual mdriver_int#(1,32,8) vif;
 	
 	function new (string name, uvm_component parent);
 		super.new(name, parent);
@@ -17,7 +17,7 @@ class drv extends uvm_driver#(seq_packet);
     	`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 		
     	//uvm_config_db#(int)::get(this, "", "port_id", port_id);
-    	uvm_config_db#(virtual axilite_int#(1,32,8))::get(this, "", "vif", vif);
+    	uvm_config_db#(virtual mdriver_int#(1,32,8))::get(this, "", "vif", vif);
 		
 	endfunction: build_phase
 	
@@ -34,10 +34,10 @@ class drv extends uvm_driver#(seq_packet);
     	`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 		
 		forever begin
-			repeat(5) @(posedge vif.AXI_ACLK);
+			repeat(5) @(posedge vif.clk);
 			seq_item_port.get_next_item(req);
 		    
-		    vif.AXI_ARVALID <= req.bt;
+		    vif.we <= req.rdata;
 		    `uvm_info("DRV_RUN", {"\n", req.sprint()}, UVM_MEDIUM);
 			
 			seq_item_port.item_done();

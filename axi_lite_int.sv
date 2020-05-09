@@ -7,6 +7,7 @@ interface axilite_int #(
 		parameter integer C_AXI_ADDR_WIDTH	= 8
 	);
 	
+	
 	logic  								AXI_ACLK;
 	logic  								AXI_ARESETN;
 	
@@ -107,7 +108,9 @@ interface axilite_int #(
 		output                              AXI_BVALID,
 		input                               AXI_BREADY
 
-	);
+		);
+	
+	axil_checker axil_checker_inst(.*);
 	
 endinterface : axilite_int
 

@@ -4,17 +4,17 @@ module simpletb;
 	import uvm_pkg::*;
 	import prenv::*;
 	
-	axilite_int#(1,32,8) vif();
+	mdriver_int#(1,32,8) vif();
 	
-	patrec patrec_inst(.io(vif.slave));
+	master_wrapper master_wrapper_inst(.io(vif.slave));
 	
 	initial begin
-		vif.AXI_ACLK = 0;
-		forever #10 vif.AXI_ACLK = ~vif.AXI_ACLK;
+		vif.clk = 0;
+		forever #10 vif.clk = ~vif.clk;
 	end
 	
 	initial begin
-		uvm_config_db#(virtual axilite_int#(1,32,8))::set(null, "*", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(1,32,8))::set(null, "*", "vif", vif);
   		$timeformat(-9, 1, "ns", 10);
 		run_test();
 	end
