@@ -6,15 +6,15 @@ import uvm_pkg::*;
 class agt extends uvm_agent;
 	`uvm_component_utils(agt)
 	
-	virtual mdriver_int#(1,32,8) vif;
+	virtual mdriver_int#(32,8) vif;
 	drv drv_inst;
 	uvm_sequencer#(seq_packet) drv_side_sequencer;
-    iMonitor mon;
-    uvm_analysis_port #(seq_packet) analysis_port;
+		iMonitor mon;
+		uvm_analysis_port #(seq_packet) analysis_port;
 	
 	function new (string name, uvm_component parent);
 		super.new(name, parent);
-    	`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
+			`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 	endfunction
 	
 	virtual function void build_phase(uvm_phase phase);
@@ -22,38 +22,38 @@ class agt extends uvm_agent;
 		`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 		
 		if (is_active == UVM_ACTIVE) begin // is_active flag set for agents containing Seq, Driver and Monitor
-		                                   // is_active flag cleared for agents containing only Monitor
+																			 // is_active flag cleared for agents containing only Monitor
 			drv_side_sequencer = uvm_sequencer#(seq_packet)::type_id::create("drv_side_sequencer", this);
 			drv_inst = drv::type_id::create("drv", this);
 		end
 		
-        mon = iMonitor::type_id::create("mon", this);
+				mon = iMonitor::type_id::create("mon", this);
 		
-        analysis_port = new("analysis_port", this);
+				analysis_port = new("analysis_port", this);
 		
-		uvm_config_db#(virtual mdriver_int#(1,32,8))::get(this, "", "vif", vif);
-		uvm_config_db#(virtual mdriver_int#(1,32,8))::set(this, "*", "vif", vif);
-  	
+		uvm_config_db#(virtual mdriver_int#(32,8))::get(this, "", "vif", vif);
+		uvm_config_db#(virtual mdriver_int#(32,8))::set(this, "*", "vif", vif);
+		
 	endfunction: build_phase
 	
 	virtual function void connect_phase(uvm_phase phase);
-    	super.connect_phase(phase);
-    	`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
+			super.connect_phase(phase);
+			`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 
-    	if (is_active)
-	    	drv_inst.seq_item_port.connect(drv_side_sequencer.seq_item_export);
+			if (is_active)
+				drv_inst.seq_item_port.connect(drv_side_sequencer.seq_item_export);
 		mon.analysis_port.connect(this.analysis_port);
-  	endfunction: connect_phase
+		endfunction: connect_phase
 
-  virtual function void end_of_elaboration_phase(uvm_phase phase);
-    super.end_of_elaboration_phase(phase);
-    `uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
+	virtual function void end_of_elaboration_phase(uvm_phase phase);
+		super.end_of_elaboration_phase(phase);
+		`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 
-    if (vif == null) begin
-      `uvm_fatal("CFGERR", "Interface for input agent not set");
-    end
-  endfunction: end_of_elaboration_phase
-    
+		if (vif == null) begin
+			`uvm_fatal("CFGERR", "Interface for input agent not set");
+		end
+	endfunction: end_of_elaboration_phase
+		
 	task run_phase(uvm_phase phase);
 		phase.raise_objection(this); 
 		begin seq seq1; 
@@ -62,5 +62,5 @@ class agt extends uvm_agent;
 		end
 		phase.drop_objection(this); 
 	endtask
-    
+		
 endclass

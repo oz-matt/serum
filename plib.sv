@@ -3,7 +3,7 @@
 
 import axil_if_c::*;
 
-task setbus(input logic clk, logic[7:0] data, virtual axilite_int#(1,32,8) bus);
+task setbus(input logic clk, logic[7:0] data, virtual axilite_int#(32,8) bus);
 	repeat(5) @(posedge clk);
 	placebyte(std::randomize(data));
 	repeat(5) @(posedge clk);
