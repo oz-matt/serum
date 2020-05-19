@@ -4,13 +4,13 @@ LD_LIBRARY_PATH = ${NOVAS_HOME}/share/PLI/VCS/LINUX64
 
 test = test_base
 program_path = ./tests
-PROGRAM_TOP = ${program_path}/simpletb.sv ${program_path}/master_wrapper.sv  ./uvm/tbase.sv patrec.sv
+PROGRAM_TOP = ${program_path}/simpletb.sv ${program_path}/master_wrapper.sv  ./uvm/tbase.sv memslave.sv
 package_path = ./pkg
-PACKAGES = axi_lite_int.sv mdriver_int.sv ./protocol_checker/axil_checker.sv ${package_path}/*.svh ${package_path}/*.sv
-TEST_TOP = ${PACKAGES} ${PROGRAM_TOP}
+PACKAGES = axilite_int.sv mdriver_int.sv ./protocol_checker/axil_checker.sv ${package_path}/*.svh ${package_path}/*.sv
+TEST_TOP = ${PROTOCOL_CHECKER} ${PACKAGES} ${PROGRAM_TOP}
 rtl_path = ./uvm
 DUT = ./uvm/seq_packet.sv  ./uvm/imon.sv ./uvm/omon.sv  ./uvm/seq.sv  ./uvm/driver.sv ./uvm/agt.sv  ./uvm/oagt.sv  ./uvm/scoreboard.sv  ./uvm/env.sv 
-#HARNESS_TOP = $(rtl_path)/router_test_top.sv
+PROTOCOL_CHECKER = ./protocol_checker/axi_raddr_props.sv  ./protocol_checker/axi_rdata_props.sv ./protocol_checker/axi_waddr_props.sv  ./protocol_checker/axi_wdata_props.sv  ./protocol_checker/axi_wresp_props.sv 
 TOP = ${TEST_TOP}
 
 log = simv.log
@@ -24,8 +24,11 @@ option = UVM_TR_RECORD +UVM_LOG_RECORD
 trace =
 #trace = UVM_OBJECTION_TRACE
 
-compile_switches = -sverilog -lca -debug_access+all -P /home/disk/Verdi3_L-2016.06-1/share/PLI/VCS/LINUX64/novas.tab \
-                 /home/disk/Verdi3_L-2016.06-1/share/PLI/VCS/LINUX64/pli.a -full64 +libext+.v+.h+.vh+.vlib -kdb +vcs+vcdpluson -timescale="1ns/100ps" -l comp.log -ntb_opts ${uvm_ver} ${DUT} ${TOP} +define+${uvm_defines}+${defines}
+compile_switches = -sverilog -lca -debug_access+all -assert enable_diag \
+		+define+ASSERT_ON -y $VCS_HOME/packages/sva +libext+.v \
+		+incdir+$VCS_HOME/packages/sva -P /home/disk/Verdi3_L-2016.06-1/share/PLI/VCS/LINUX64/novas.tab \
+                 /home/disk/Verdi3_L-2016.06-1/share/PLI/VCS/LINUX64/pli.a -full64 +libext+.v+.h+.vh+.vlib \
+		-kdb +vcs+vcdpluson -timescale="1ns/100ps" -l comp.log -ntb_opts ${uvm_ver} ${DUT} ${TOP} +define+${uvm_defines}+${defines}
 runtime_switches = -l ${log} +UVM_TESTNAME=${test} +UVM_VERBOSITY=${verbosity} +${plus} +${trace} +${option}
 
 tcl = packet.tcl
@@ -68,6 +71,10 @@ verdi:
 verdi_tr:
 	./simv +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE
 	verdi -play verdi_scripts/${cmdtr} -nologo & 
+
+verdi_a:
+	./simv -assert success -assert verbose -assert report +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE
+	verdi -ssf novas.fsdb -nologo & 
 
 verdi_i: 
 	./simv +ntb_random_seed=$(seed) ${runtime_switches} +UVM_VERDI_TRACE
