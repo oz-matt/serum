@@ -13,20 +13,14 @@ module simpletb;
 		$fsdbDumpfile("novas.fsdb");
 		$fsdbDumpvars();
 		$fsdbDumpon;
-		#50
-		$finish;
+		//#500
+		//$finish;
 	end
 
 	initial begin
-		vif.nreset <= 0; //Start in reset to initialize registers
-		#4
-		vif.nreset <= 1;
-
-		vif.execute_write('hf3, 'hb4b4b4b4);
-		vif.execute_read('hf3); //Value then avilable in vif.so_data
-
-		$display("Read data: %X", vif.so_data);
-
+		uvm_config_db#(virtual mdriver_int#(32,8))::set(null, "*", "vif", vif); 
+		$timeformat(-9, 1, "ns", 10); 
+		run_test();
 	end
 
 endmodule

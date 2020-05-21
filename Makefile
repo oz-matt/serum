@@ -4,20 +4,21 @@ LD_LIBRARY_PATH = ${NOVAS_HOME}/share/PLI/VCS/LINUX64
 
 test = test_base
 program_path = ./tests
-PROGRAM_TOP = ${program_path}/simpletb.sv ${program_path}/master_wrapper.sv  ./uvm/tbase.sv memslave.sv
+PROGRAM_TOP = ./uvm/tbase.sv
 package_path = ./pkg
-PACKAGES = axilite_int.sv mdriver_int.sv ./protocol_checker/axil_checker.sv ${package_path}/*.svh ${package_path}/*.sv
-TEST_TOP = ${PROTOCOL_CHECKER} ${PACKAGES} ${PROGRAM_TOP}
+PACKAGES = ${package_path}/prenv.svh ${package_path}/*.sv
+TEST_TOP = ${PACKAGES} ${PROGRAM_TOP}
 rtl_path = ./uvm
-DUT = ./uvm/seq_packet.sv  ./uvm/imon.sv ./uvm/omon.sv  ./uvm/seq.sv  ./uvm/driver.sv ./uvm/agt.sv  ./uvm/oagt.sv  ./uvm/scoreboard.sv  ./uvm/env.sv 
+DUT = ${PROTOCOL_CHECKER} axilite_int.sv mdriver_int.sv ./protocol_checker/axil_checker.sv ${program_path}/simpletb.sv ${program_path}/master_wrapper.sv memslave.sv
 PROTOCOL_CHECKER = ./protocol_checker/axi_raddr_props.sv  ./protocol_checker/axi_rdata_props.sv ./protocol_checker/axi_waddr_props.sv  ./protocol_checker/axi_wdata_props.sv  ./protocol_checker/axi_wresp_props.sv 
+TB_SCOREBOARD = ./uvm/scoreboard/sb_comparator.sv ./uvm/scoreboard/tb_scoreboard.sv 
 TOP = ${TEST_TOP}
 
 log = simv.log
 verbosity = UVM_MEDIUM
 uvm_ver = uvm-1.2
 seed = 1
-defines =
+defines = +incdir+./uvm/scoreboard +incdir+./uvm +incdir+./
 uvm_defines = UVM_NO_DEPRECATED+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
 plus = 
 option = UVM_TR_RECORD +UVM_LOG_RECORD
@@ -33,7 +34,7 @@ runtime_switches = -l ${log} +UVM_TESTNAME=${test} +UVM_VERBOSITY=${verbosity} +
 
 tcl = packet.tcl
 tr = packet_tr.tcl
-cmdtr = verdiP.cmd
+cmdtr = uvm_tr.cmd
 cmdi = std.cmd
 cmd = none.cmd
 prev = verdi.cmd

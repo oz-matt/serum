@@ -29,10 +29,12 @@ virtual task run_phase(uvm_phase phase);
 
 		forever begin
 			tr = seq_packet::type_id::create("tr", this);
-		@(posedge vif.we);
-			tr.rdata = vif.we;
+	@(posedge vif.fin);
+			if(!vif.we) begin
+			tr.data = vif.so_data;
 			`uvm_info("Got_Output_Packet", {"\n", tr.sprint()}, UVM_MEDIUM);
 			analysis_port.write(tr);
+				end
 		end
 		
 	endtask: run_phase

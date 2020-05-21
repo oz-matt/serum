@@ -32,14 +32,16 @@ class drv extends uvm_driver#(seq_packet);
 
 	virtual task run_phase(uvm_phase phase);
 			`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
+		vif.nreset <= 0;
+		repeat(2) @(posedge vif.clk);
+		vif.nreset <= 1;
 		
 		forever begin
 			repeat(5) @(posedge vif.clk);
 			seq_item_port.get_next_item(req);
-				
-				vif.we <= req.rdata;
-				`uvm_info("DRV_RUN", {"\n", req.sprint()}, UVM_MEDIUM);
-			
+			vif.execute_write(req.address, req.data);
+			vif.execute_read(req.address);
+			`uvm_info("DRV_RUN", {"\n", req.sprint()}, UVM_MEDIUM);
 			seq_item_port.item_done();
 		end
 	endtask

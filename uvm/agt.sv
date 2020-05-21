@@ -22,7 +22,7 @@ class agt extends uvm_agent;
 		`uvm_info("TRACE", $sformatf("%m"), UVM_HIGH);
 		
 		if (is_active == UVM_ACTIVE) begin // is_active flag set for agents containing Seq, Driver and Monitor
-																			 // is_active flag cleared for agents containing only Monitor
+																			// is_active flag cleared for agents containing only Monitor
 			drv_side_sequencer = uvm_sequencer#(seq_packet)::type_id::create("drv_side_sequencer", this);
 			drv_inst = drv::type_id::create("drv", this);
 		end
